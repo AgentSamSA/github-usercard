@@ -6,14 +6,22 @@ import axios from "axios";
     https://api.github.com/users/<your name>
 */
 
+const cards = document.querySelector(".cards");
+
 axios
   .get("https://api.github.com/users/AgentSamSA")
   .then((response) => {
     let userData = response.data;
     cards.appendChild(makeGitHubUser(userData));
-    //console.log(userData);
+    console.log(userData);
   })
-  .catch((error) => console.log("error", error));
+  .catch((error) => console.log("error", error))
+  .then((response) => {
+    let followerData = response.data.followers_url;
+    followerData.forEach(follower => cards.appendChild(makeGitHubUser(follower)));
+    console.log(followerData);
+  })
+  .catch(error => console.log("error", error));
 /*
   STEP 2: Inspect and study the data coming back, this is YOUR
     github info! You will need to understand the structure of this
@@ -27,8 +35,6 @@ axios
     and append the returned markup to the DOM as a child of .cards
 */
 
-const cards = document.querySelector(".cards");
-
 /*
   STEP 5: Now that you have your own card getting added to the DOM, either
     follow this link in your browser https://api.github.com/users/<Your github name>/followers,
@@ -40,16 +46,16 @@ const cards = document.querySelector(".cards");
     user, and adding that card to the DOM.
 */
 
-const friendsArray = ["tetondan", "dustinmyers", "justsml", "luishrd", "bigknell", "c-melchor", "hsehaw"];
+const friendsArray = ["tetondan", "dustinmyers", "justsml", "luishrd", "bigknell"];
 
 friendsArray.forEach((friend) => {
   axios
-  .get(`https://api.github.com/users/${friend}`)
-  .then((response) => {
-    let userData = response.data;
-    cards.appendChild(makeGitHubUser(userData));
-  })
-  .catch((error) => console.log("error", error));
+    .get(`https://api.github.com/users/${friend}`)
+    .then((response) => {
+      let userData = response.data;
+      cards.appendChild(makeGitHubUser(userData));
+    })
+    .catch((error) => console.log("error", error));
 });
 
 /*
