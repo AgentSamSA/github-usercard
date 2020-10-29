@@ -10,18 +10,24 @@ const cards = document.querySelector(".cards");
 
 axios
   .get("https://api.github.com/users/AgentSamSA")
-  .then((response) => {
+  .then(response => {
     let userData = response.data;
     cards.appendChild(makeGitHubUser(userData));
     console.log(userData);
+    axios
+      .get("https://api.github.com/users/AgentSamSA/followers")
+      .then(secondResponse => {
+        secondResponse.data.forEach(follower => {
+          axios
+            .get(`https://api.github.com/users/${follower.login}`)
+            .then(thirdResponse => cards.appendChild(makeGitHubUser(thirdResponse.data)))
+            .catch(error => console.log("error", error));
+        });
+      })
+      .catch(error => console.log("error", error));
   })
-  .catch((error) => console.log("error", error))
-  .then((response) => {
-    let followerData = response.data.followers_url;
-    followerData.forEach(follower => cards.appendChild(makeGitHubUser(follower)));
-    console.log(followerData);
-  })
-  .catch(error => console.log("error", error));
+  .catch((error) => console.log("error", error));
+
 /*
   STEP 2: Inspect and study the data coming back, this is YOUR
     github info! You will need to understand the structure of this
