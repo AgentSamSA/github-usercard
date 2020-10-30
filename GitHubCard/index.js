@@ -105,6 +105,8 @@ function makeGitHubUser(gitHubUserObj) {
   const followers = document.createElement("p");
   const following = document.createElement("p");
   const bio = document.createElement("p");
+  const userChartTitle = document.createElement("h3");
+  const userChart = document.createElement("img");
 
   card.appendChild(userImg);
   card.appendChild(cardInfo);
@@ -115,6 +117,8 @@ function makeGitHubUser(gitHubUserObj) {
   cardInfo.appendChild(followers);
   cardInfo.appendChild(following);
   cardInfo.appendChild(bio);
+  cardInfo.appendChild(userChartTitle);
+  cardInfo.appendChild(userChart);
 
   card.classList.add("card");
   cardInfo.classList.add("card-info");
@@ -133,6 +137,12 @@ function makeGitHubUser(gitHubUserObj) {
   followers.textContent = "Followers: " + gitHubUserObj.followers;
   following.textContent = "Following: " + gitHubUserObj.following;
   bio.textContent = "Bio: " + gitHubUserObj.bio;
+  userChartTitle.textContent = `${gitHubUserObj.name}'s GitHub Chart:`;
+  userChartTitle.style.fontSize = "1.8rem";
+  userChartTitle.style.textAlign = "center";
+  userChart.style.width = "100%";
+  userChart.setAttribute("src", `http://ghchart.rshah.org/${gitHubUserObj.login}`);
+  userChart.setAttribute("alt", `${gitHubUserObj.name}'s Github Chart`);
 
   return card;
 }
